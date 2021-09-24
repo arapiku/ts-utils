@@ -1,0 +1,8 @@
+{
+  "name": "ts-utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:arapiku/ts-utils.git",
+  "author": "arapiku <arapiku420@gmail.com>",
+  "license": "MIT"
+}
