@@ -18,3 +18,26 @@ export function toHalf(str: string): string {
 export function getByte(value: string): number {
   return encodeURIComponent(value).replace(/%../g, 'x').length
 }
+
+/**
+ * CSV形式の文字列を Blob に変換する
+ * @param text CSV形式の文字列
+ * @returns blob
+ */
+export function csvTextToBlob(text: string) {
+  const bom = new Uint8Array([0xef, 0xbb, 0xbf])
+  return new Blob([bom, text], { type: 'text/csv'})
+}
+
+/**
+ * CSVをダウンロードする
+ * @param text CSV形式の文字列
+ * @param name ファイル名
+ */
+export function downloadCSV(text: string, name: string) {
+  const blob = csvTextToBlob(text)
+  const link = document.createElement('a')
+  link.href = window.URL.createObjectURL(blob)
+  link.download = `${name}.csv`
+  link.click()
+}
