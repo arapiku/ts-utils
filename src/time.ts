@@ -25,3 +25,14 @@ export function toMinutes(time: string | Date) {
   if (!hour || !minute) return 0
   return +hour * 60 + +minute
 }
+
+/**
+ * 分を H:mm 形式の文字列に変換する
+ * @param minutes 分
+ * @returns H:mm 形式の文字列
+ */
+export function formatMinutes(minutes: number) {
+  const hour = Math.floor(minutes / 60)
+  const minute = minutes % 60
+  return `${hour}:${padZero(minute)}`
+}
