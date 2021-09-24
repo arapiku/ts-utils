@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:arapiku/ts-utils.git",
   "author": "arapiku <arapiku420@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^2.24.0"
+  }
 }
