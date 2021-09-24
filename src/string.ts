@@ -9,3 +9,12 @@ export function toHalf(str: string): string {
     (v) => String.fromCharCode(v.charCodeAt(0) - 0xfee0),
   )
 }
+
+/**
+ * 文字列のバイト数を取得する
+ * @param value 文字列
+ * @returns バイト数
+ */
+export function getByte(value: string): number {
+  return encodeURIComponent(value).replace(/%../g, 'x').length
+}
