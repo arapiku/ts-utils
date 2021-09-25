@@ -6,6 +6,7 @@
   "author": "arapiku <arapiku420@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@vue/composition-api": "^1.2.2",
     "date-fns": "^2.24.0",
     "lodash": "^4.17.21"
   },
