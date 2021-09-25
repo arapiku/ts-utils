@@ -1,5 +1,6 @@
-import { onBeforeMount, onBeforeUnmount, onMounted, reactive } from "@vue/composition-api"
-import { throttle } from "lodash"
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive } from "@vue/composition-api"
+import { mapValues, mergeWith, throttle } from "lodash"
+import { Commit } from "vuex"
 
 /**
  * スクロールを固定する
@@ -47,4 +48,47 @@ export function useClock() {
     update()
   }
   return clock
+}
+
+/**
+ * オブジェクトへの変更を、指定された mutation で commit するプロキシライクなリアクティブデータを返す
+ * @param get getter
+ * @param commit commit
+ * @param mutation mutation
+ * @returns 書き込み可能な computed 群を持つリアクティブデータ
+ */
+export function model<T extends object>(get: () => T, commit: Commit, mutation: string) {
+  return reactive(
+    mapValues(get(), (_, key) =>
+      computed({
+        get: () => get()[key as keyof T],
+        set: (value) => commit(mutation, { [key]: value })
+      }),
+    ),
+  ) as T
+}
+
+/**
+ * 書き込み時に指定された mutation で commit する computed を返す
+ * @param get getter
+ * @param commit commit
+ * @param mutation mutation
+ * @returns 書き込み可能な computed
+ */
+export function mutate<T>(get: () => T, commit: Commit, mutation: string) {
+  return computed({ get, set: (value) => commit(mutation, value) })
+}
+
+/**
+ * state を lodash#merge する
+ * 配列はマージではなく上書きされる
+ * @param state state
+ * @param value 更新値
+ * @returns 更新された state
+ */
+export function mergeState<S, V>(state: S, value: V) {
+  if (!value) return state
+  const merged = mergeWith({}, state, value, (o, s) => (Array.isArray(o) ? s : undefined))
+  Object.keys(value).forEach((key) => (state[key as keyof S] = merged[key as keyof S]))
+  return state
 }
