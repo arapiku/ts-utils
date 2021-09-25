@@ -2,6 +2,20 @@ import { onBeforeMount, onBeforeUnmount, onMounted, reactive } from "@vue/compos
 import { throttle } from "lodash"
 
 /**
+ * スクロールを固定する
+ */
+export function useScrollLock() {
+  const bodyStyle = document.body.style
+  Object.assign(bodyStyle, { position: 'fixed', top: `-${window.scrollY}px` })
+
+  onBeforeUnmount(() => {
+    const top = Number(bodyStyle.top || 0)
+    Object.assign(bodyStyle, { position: '', top: '' })
+    window.scrollTo(0, -top)
+  })
+}
+
+/**
  * onMounted と window がリサイズされるタイミングでイベントをリッスンする
  * @param listener イベントリスナー
  * @param wait throttle の wait
